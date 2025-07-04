@@ -1,0 +1,186 @@
+@import "tailwindcss";
+
+/* ─── COLOR TOKENS ───────────────────────────── */
+@layer base {
+  :root {
+    /* light-mode pastels */
+    --color1: #F9CEEE;
+    --color2: #92B4EC;
+    --color3: #F9F3EE;
+    --color4: #97C4B8;
+    --font-color: #354259;
+    --text-glow: 0 0 6px rgba(173, 182, 255, 0.5), 
+             0 0 12px rgba(173, 182, 255, 0.3);
+    --accent-color: #7161ef;
+    --accent-color2: #4e148c;
+    --nav-background: rgba(78, 20, 140, 0.2)
+;
+  }
+
+  .dark {
+    /* dark-mode tones (dark → light) */
+    --color1: #000000;
+    --color2: #150050;
+    --color3: #3F0071;
+    --color4: #790252;
+    --font-color: #F7F7F7;
+    --text-glow: 0 0 10px rgba(200,200,255,.6),
+                 0 0 18px rgba(200,200,255,.4);
+    --accent-color:#bde0fe;
+    --accent-color2: #e4c1f9;
+    --nav-background: rgba(247, 247, 247, 0.3);
+
+
+  }
+
+  html, body {
+    color: var(--font-color); 
+    transition:
+      background 0.8s ease-in-out,
+      color 0s linear !important,   /* 👈 disable it forcefully */
+      filter 0.8s ease-in-out;
+  }
+
+  body {
+    @apply min-h-screen;
+    overflow-x: hidden;
+    overflow-y: hidden;
+
+    /* Multi-stop gradient with rotating effect */
+    background: linear-gradient(
+      135deg,
+      var(--color1) 0%,
+      var(--color1) 20%,
+      var(--color2) 30%,
+      var(--color2) 45%,
+      var(--color3) 55%,
+      var(--color3) 70%,
+      var(--color4) 80%,
+      var(--color4) 100%
+    );
+    background-size: 400% 400%;
+    animation: gradRotate 50s ease-in-out infinite;
+    /* color: var(--font-color); */
+  }
+}
+
+/* ─── ROTATING GRADIENT KEYFRAMES ────────────── */
+@keyframes gradRotate {
+  0%   { background-position: 0% 0%; }
+  25%  { background-position: 50% 0%; }
+  50%  { background-position: 100% 50%; }
+  75%  { background-position: 50% 100%; }
+  100% { background-position: 0% 0%; }
+}
+
+/* ─── BLOBS (overlay on top of gradient) ─────── */
+.blob {
+  position: absolute;
+  pointer-events: none;
+  z-index: -1;
+  width: 120vw;
+  height: 120vw;
+  border-radius: 60% 40% 30% 70% / 50% 60% 60% 40%;
+  filter: blur(100px);
+  opacity: 0.45;
+  mix-blend-mode: lighten;
+
+  animation: 
+    blobFloat 60s ease-in-out infinite alternate,
+    blobColorShift 120s linear infinite;
+  transition: background 0.8s ease-in-out, filter 0.8s ease-in-out;
+}
+
+/* ─── BLOB POSITIONS ─────────────────────────── */
+.blob-1 { background: var(--color1); top: -25%; left: -25%; animation-delay: 0s; }
+.blob-2 { background: var(--color2); top: 10%;  left: 30%;  animation-delay: 5s; }
+.blob-3 { background: var(--color3); top: 45%;  left: 55%;  animation-delay: 10s; }
+.blob-4 { background: var(--color4); top: 70%;  left: 80%;  animation-delay: 15s; }
+
+/* ─── BLOB FLOAT ANIMATION ───────────────────── */
+@keyframes blobFloat {
+  0%   { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+  50%  { transform: translate(12%, -8%) scale(1.1) rotate(5deg); }
+  100% { transform: translate(24%, 16%) scale(1.05) rotate(-4deg); }
+}
+
+@layer utilities {
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes grow {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+  }
+
+  .animate-grow {
+    animation: grow 1.5s ease-out forwards;
+    transform-origin: left;
+  }
+
+  .fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+  }
+
+  .delay-1 { animation-delay: 0.3s; }
+  .delay-2 { animation-delay: 0.6s; }
+  .delay-3 { animation-delay: 0.9s; }
+  .delay-4 { animation-delay: 1.6s; }
+
+  .text-glow {
+    text-shadow: var(--text-glow);
+  }
+
+  .card-hover {
+    @apply transition-transform duration-300 hover:scale-[1.02] hover:shadow-lg;
+  }
+
+  .accent {
+    color: var(--accent-color);
+  }
+
+  .accent-2 {
+    @apply transition-colors duration-300;
+    color: var(--accent-color2);
+  }
+
+
+
+  .nav-bg {
+    background: var(--nav-background);
+  }
+
+  .button-class {
+    @apply px-10 py-5 rounded-full font-medium transition-all duration-300 hover:scale-105 active:scale-95;
+    background: var(--nav-background);
+    box-shadow: none;
+  }
+
+    .button-class-sm {
+    @apply px-5 py-2 rounded-full font-light transition-all duration-300 hover:scale-105 active:scale-95;
+    background: var(--nav-background)/70;
+    box-shadow: none;
+  }
+      .button-class-sm-selected {
+    @apply px-5 py-2 rounded-full font-light transition-all duration-300 hover:scale-105 active:scale-95;
+    background: var(--accent-color);
+    box-shadow: none;
+    color: var(--color1)
+  }
+
+  .button-class:hover {
+    box-shadow: var(--text-glow);
+  }
+
+  .hover-accent:hover {
+    color: var(--accent-color);
+    @apply transition-colors duration-300;
+    text-shadow: var(--text-glow);
+  }
+
+  .parent {
+    background-color: rgba(113, 97, 239, 0.8); /* pastel accent with 30% opacity */
+  }
+}
